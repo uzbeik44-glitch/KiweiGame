@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime Match - Main Menu</title>
+<style>
+body{
+  margin:0; font-family: Arial, sans-serif; background: linear-gradient(135deg,#4b0082,#6a0dad); color:white; display:flex; justify-content:center; padding:20px;
+}
+#main-menu{
+  width:420px; display:flex; flex-direction:column; align-items:center; gap:20px;
+}
+/* PROFIL PANEL */
+#profile-panel{
+  display:flex; align-items:center; justify-content:space-between; width:100%; background:rgba(255,255,255,0.05); padding:10px; border-radius:15px;
+}
+#profile-panel .avatar-container{
+  display:flex; align-items:center; gap:10px;
+}
+#profile-panel img.avatar{
+  width:60px; height:60px; border-radius:50%; border:2px solid white;
+}
+#profile-panel input[type=file]{cursor:pointer;}
+#username-input{
+  background:transparent; border:none; color:white; font-size:16px; font-weight:bold; width:120px;
+}
+#username-input:focus{outline:none; border-bottom:1px solid white;}
+
+/* ASOSIY MENU BUTTONS */
+#main-buttons{
+  display:flex; flex-direction:column; gap:10px; width:100%;
+}
+#main-buttons button{
+  padding:15px 0; border:none; border-radius:10px; background:linear-gradient(45deg,#ff6ec4,#7873f5);
+  color:white; font-weight:bold; cursor:pointer; font-size:16px; transition:0.3s;
+}
+#main-buttons button:hover{transform:translateY(-3px); box-shadow:0 5px 15px rgba(0,0,0,0.3);}
+
+/* YO‘L TANLASH PANELI */
+#path-selection{width:100%; background:rgba(255,255,255,0.05); padding:10px; border-radius:15px;}
+#paths-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(80px,1fr));
+  gap:10px; margin-top:10px; max-height:300px; overflow-y:auto;
+}
+#paths-grid button{
+  padding:10px; border:none; border-radius:10px;
+  background:linear-gradient(45deg,#ff6ec4,#7873f5); color:white; font-weight:bold; cursor:pointer; white-space:nowrap; transition:0.3s;
+}
+#paths-grid button.locked{background:gray; cursor:not-allowed;}
+#paths-grid button:hover:not(.locked){transform:translateY(-2px); box-shadow:0 3px 10px rgba(0,0,0,0.3);}
+
+/* PASTKI PANEL */
+#bottom-panel{display:flex; justify-content:space-between; width:100%;}
+#bottom-panel button{
+  padding:10px 15px; border:none; border-radius:10px; background:linear-gradient(45deg,#ff6ec4,#7873f5); color:white; cursor:pointer; transition:0.3s;
+}
+#bottom-panel button:hover{transform:translateY(-2px); box-shadow:0 3px 10px rgba(0,0,0,0.3);}
+</style>
+</head>
+<body>
+<div id="main-menu">
+
+  <!-- PROFIL PANEL -->
+  <div id="profile-panel">
+    <div class="avatar-container">
+      <img src="images/avatar.png" alt="Avatar" class="avatar" id="main-avatar">
+      <input type="file" id="avatar-input">
+    </div>
+    <div class="bio-level">
+      <input type="text" id="username-input" placeholder="KiweiAI">
+      <p class="level">Level <span id="player-level">1</span></p>
+    </div>
+  </div>
+
+  <!-- ASOSIY MENU BUTTONS -->
+  <div id="main-buttons">
+    <button id="play-game-btn">Play Game</button>
+    <button id="daily-reward-btn">Daily Reward</button>
+    <button id="leaderboard-btn">Leaderboard</button>
+  </div>
+
+  <!-- YO‘L TANLASH PANELI -->
+  <div id="path-selection">
+    <h3>Select Path</h3>
+    <div id="paths-grid"></div>
+  </div>
+
+  <!-- PASTKI PANEL -->
+  <div id="bottom-panel">
+    <button id="settings-btn">Settings</button>
+    <button id="help-btn">Help</button>
+    <button id="exit-btn">Exit</button>
+  </div>
+
+</div>
+
+<script>
+// -----------------------------
+// AVATAR & USERNAME SYNC
+// -----------------------------
+const mainAvatar = document.getElementById('main-avatar');
+const savedAvatar = localStorage.getItem('avatarSrc');
+if(savedAvatar){ mainAvatar.src = savedAvatar; }
+
+const usernameInput = document.getElementById('username-input');
+const savedName = localStorage.getItem('username');
+if(savedName){ usernameInput.value = savedName; }
+
+const avatarInput = document.getElementById('avatar-input');
+avatarInput.addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      mainAvatar.src = ev.target.result;
+      localStorage.setItem('avatarSrc', ev.target.result);
+    }
+    reader.readAsDataURL(file);
+  }
+});
+
+usernameInput.addEventListener('input', ()=>{ localStorage.setItem('username', usernameInput.value); });
+
+// -----------------------------
+// PATHS LOGIC
+// -----------------------------
+const totalPaths = 20;
+const pathsGrid = document.getElementById('paths-grid');
+let unlockedPath = localStorage.getItem('unlockedPath') ? parseInt(localStorage.getItem('unlockedPath')) : 1;
+
+for(let i=1;i<=totalPaths;i++){
+  const btn = document.createElement('button');
+  btn.textContent = `${i}-yo'l`;
+  if(i>unlockedPath){ btn.classList.add('locked'); btn.disabled=true; }
+  btn.addEventListener('click', ()=>{
+    if(i>unlockedPath) return;
+    window.location.href = `levels/${i}-yo'l.html`;
+  });
+  pathsGrid.appendChild(btn);
+}
+
+// MAIN MENU BUTTONS
+document.getElementById('play-game-btn').addEventListener('click', ()=>{ window.location.href=`levels/1-yo'l.html`; });
+document.getElementById('daily-reward-btn').addEventListener('click', ()=>alert("Daily reward!"));
+document.getElementById('leaderboard-btn').addEventListener('click', ()=>alert("Leaderboard!"));
+
+document.getElementById('settings-btn').addEventListener('click', ()=>alert("Settings clicked"));
+document.getElementById('exit-btn').addEventListener('click', ()=>{
+    // Index.html ga o‘tkazish
+    window.location.href = 'index.html';
+});
+
+document.getElementById('exit-btn').addEventListener('click', ()=>alert("Exit clicked"));
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Anime Chatbot Game</title>
+    <link rel="stylesheet" href="./profile.css">
+</head>
+<body>
+    <div class="profile-container">
+
+        <!-- Yuqori qism: Avatar + Asosiy info -->
+        <div class="profile-top">
+            <div class="avatar-section">
+                <img src="assets/images/avatar.png" alt="Avatar" id="avatar">
+                <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+                <button class="edit-btn" onclick="changeAvatar()">Change Avatar</button>
+            </div>
+
+            <div class="profile-info">
+                <div class="username-block">
+                    <h2 id="username">Dilshod</h2>
+                    <button class="edit-btn" onclick="editUsername()">Edit</button>
+                </div>
+
+                <div class="bio-block">
+                    <p id="bio">Anime lover & clicker master!</p>
+                    <button class="edit-btn" onclick="editBio()">Edit</button>
+                </div>
+
+                <div class="progress-bar">
+                    <span>Level <span id="level">5</span></span>
+                    <div class="bar-bg">
+                        <div class="bar-fill" id="levelBar" style="width: 60%;"></div>
+                    </div>
+                </div>
+
+                <p class="score">Score: <span id="score">1200</span></p>
+            </div>
+        </div>
+
+        <!-- O‘rta qism: Sevimli animelar -->
+        <div class="favorites">
+            <h3>Sevimli Anime</h3>
+            <div id="favoriteList" class="favorite-list">
+                <div class="fav-card">Naruto <button onclick="removeFavorite(this)">Remove</button></div>
+                <div class="fav-card">One Piece <button onclick="removeFavorite(this)">Remove</button></div>
+            </div>
+            <div class="favorite-add">
+                <input type="text" id="newFavorite" placeholder="Add new anime">
+                <button class="add-btn" onclick="addFavorite()">Add</button>
+            </div>
+        </div>
+
+        <!-- Pastki qism: Badges -->
+        <div class="badges">
+            <h3>Badges</h3>
+            <div class="badge">🔥 Top Player</div>
+            <div class="badge">⭐ Daily Login</div>
+            <div class="badge">🏆 Level Master</div>
+        </div>
+
+       <button class="back-btn" onclick="backToMenu()">
+    ⬅ Back to Menu
+</button>
+
+    </div>
+
+    <script src="js/profile.js"></script>
+</body>
+</html>

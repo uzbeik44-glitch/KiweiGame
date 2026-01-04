@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Chatbot Game</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Profil Kartasi -->
+        <div class="profile-card">
+            <img id="menuAvatar" class="avatar">
+            <div class="profile-info">
+               
+<h2 id="menuUsername" class="username">Guest</h2>
+<p id="menuLevel" class="level">Level: 1</p>
+<p id="menuScore" class="score">Score: 0</p>
+
+            </div>
+        </div>
+
+        <!-- Menu Kartalari -->
+        <div class="menu-cards">
+            <div class="menu-card" onclick="location.href='main-menu.html'">
+                <h3>Play Game</h3>
+                <p>Start Anime Match / Clicker!</p>
+            </div>
+            <div class="menu-card" onclick="location.href='profile.html'">
+                <h3>Profile</h3>
+                <p>Check your stats & badges.</p>
+            </div>
+            <div class="menu-card" onclick="dailyReward()">
+                <h3>Daily Reward</h3>
+                <p>Claim your daily points!</p>
+            </div>
+            <div class="menu-card">
+                <h3>Leaderboard</h3>
+                <p>See top players!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

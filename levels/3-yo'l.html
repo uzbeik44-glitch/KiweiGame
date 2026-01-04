@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime Match - 3-yo'l</title>
+<style>
+body{margin:0;font-family:Arial;background:linear-gradient(135deg,#4b0082,#6a0dad);color:white;display:flex;justify-content:center;padding:20px;}
+#main-game{width:400px;display:flex;flex-direction:column;align-items:center;}
+#top-panel{display:flex;justify-content:space-between;width:100%;margin-bottom:15px;font-weight:bold;}
+#game-grid{display:grid;grid-template-columns:repeat(3,100px);grid-gap:10px;justify-content:center;margin-bottom:15px;}
+.card{width:100px;height:140px;perspective:1000px;cursor:pointer;border-radius:10px;position:relative;}
+.card img{width:100%;height:100%;border-radius:10px;backface-visibility:hidden;transition:transform 0.5s;}
+.card .back{position:absolute;top:0;left:0;transform:rotateY(180deg);}
+.card.flipped .front{transform:rotateY(180deg);}
+.card.flipped .back{transform:rotateY(0deg);}
+.card.mismatch,.card.shake{animation:shake 0.5s;border:2px solid red;}
+@keyframes shake{0%{transform:translateX(0);}25%{transform:translateX(-5px);}50%{transform:translateX(5px);}75%{transform:translateX(-5px);}100%{transform:translateX(0);}}
+#bottom-panel{display:flex;justify-content:center;gap:20px;}
+button{padding:10px 20px;border:none;border-radius:10px;background:linear-gradient(45deg,#ff6ec4,#7873f5);color:white;cursor:pointer;transition:0.3s;}
+button:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,0.3);}
+#next-level{display:none;}
+</style>
+</head>
+<body>
+<div id="main-game">
+
+  <div id="top-panel">
+    <span id="score">Score: 0</span>
+    <span id="timer">Time: 60</span>
+    <span id="level">Level: 3</span>
+  </div>
+
+  <div id="game-grid"></div>
+
+  <div id="bottom-panel">
+    <button id="restart-btn">Restart</button>
+    <button id="next-level">Next Level</button>
+    <button id="back-main">Back</button>
+  </div>
+
+</div>
+
+<script>
+// Level raqami
+const pathNumber = 3;
+document.getElementById('level').textContent = `Level: ${pathNumber}`;
+
+// Top panel elementlari
+const grid = document.getElementById('game-grid');
+const timerEl = document.getElementById('timer');
+const scoreEl = document.getElementById('score');
+const nextBtn = document.getElementById('next-level');
+
+let score=0, time=60, firstCard=null, secondCard=null, gameActive=true;
+
+// Kartalar (2-level: 6 ta karta = 3 juft)
+const cards = ['a1.png','a2.png','a3.png','a4.png','a5.png'];
+const shuffled = [...cards,...cards].sort(()=>Math.random()-0.5);
+
+function createGrid(){
+  shuffled.forEach(img=>{
+    const card=document.createElement('div');
+    card.classList.add('card');
+    card.dataset.img=img;
+    const front=document.createElement('img'); front.src='images/back.png'; front.classList.add('front');
+    const back=document.createElement('img'); back.src=`images/${img}`; back.classList.add('back');
+    card.appendChild(front); card.appendChild(back);
+    card.addEventListener('click', flipCard);
+    grid.appendChild(card);
+  });
+}
+
+function flipCard(){
+  if(!gameActive || this.classList.contains('flipped')) return;
+  this.classList.add('flipped');
+  if(!firstCard) firstCard=this;
+  else{ secondCard=this; checkMatch(); }
+}
+
+function checkMatch(){
+  if(firstCard.dataset.img===secondCard.dataset.img){
+    score+=50; scoreEl.textContent=`Score: ${score}`; resetCards();
+    if(document.querySelectorAll('.card:not(.flipped)').length===0){
+      gameActive=false;
+      nextBtn.style.display='inline-block'; // Next Level paydo bo'ladi
+    }
+  } else{
+    firstCard.classList.add('mismatch'); secondCard.classList.add('mismatch');
+    setTimeout(()=>{ firstCard.classList.remove('flipped','mismatch'); secondCard.classList.remove('flipped','mismatch'); resetCards(); },800);
+  }
+}
+
+function resetCards(){ firstCard=null; secondCard=null; }
+
+function startTimer(){
+  const interval=setInterval(()=>{
+    if(!gameActive){ clearInterval(interval); return; }
+    time--; timerEl.textContent=`Time: ${time}`;
+    if(time<=0){ clearInterval(interval); alert('Game Over'); nextBtn.style.display='inline-block'; gameActive=false; }
+  },1000);
+}
+
+// Tugmalar
+document.getElementById('restart-btn').addEventListener('click',()=>location.reload());
+document.getElementById('back-main').addEventListener('click',()=>window.location.href='../main-menu.html');
+
+// Next Level tugmasi – localStorage yangilash
+nextBtn.addEventListener('click',()=>{
+  let unlockedPath = localStorage.getItem('unlockedPath') 
+                       ? parseInt(localStorage.getItem('unlockedPath')) 
+                       : 1;
+  
+  if(pathNumber >= unlockedPath){
+    localStorage.setItem('unlockedPath', pathNumber + 1); // keyingi yo‘lni ochamiz
+  }
+
+  const nextLevel = pathNumber+1;
+  window.location.href = `../levels/${nextLevel}-yo'l.html`;
+});
+
+createGrid(); startTimer();
+</script>
+</body>
+</html>

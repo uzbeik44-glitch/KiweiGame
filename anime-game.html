@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime Match Game</title>
+<link rel="stylesheet" href="anime-game.css">
+</head>
+<body>
+<div id="main-game">
+
+  <!-- PROFIL PANELI -->
+  <div id="profile-panel">
+    <img src="images/avatar.png" alt="Avatar" class="avatar">
+    <div class="bio-level">
+      <p class="username">KiweiAI</p>
+      <p class="level">Level 12</p>
+    </div>
+  </div>
+
+  <!-- YUQORI PANEL -->
+  <div id="top-panel">
+    <span id="score">Score: 0</span>
+    <span id="timer">Time: 60</span>
+    <span id="level">Level: 1</span>
+  </div>
+
+  <!-- O‘YIN GRID -->
+  <div id="game-grid"></div>
+
+  <!-- QUYI PANEL -->
+  <div id="bottom-panel">
+    <button id="hint-btn">Hint</button>
+    <button id="restart-btn">Restart</button>
+  </div>
+
+  <!-- GAME MENU -->
+  <div id="game-menu" class="hidden">
+    <div class="menu-panel">
+      <h2>Game Menu</h2>
+      <button id="resume-btn">Resume</button>
+      <button id="settings-btn">Settings</button>
+      <button id="help-btn">Help</button>
+      <button id="quit-btn">Quit</button>
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div id="end-screen">
+    <h2>GAME OVER!</h2>
+    <p id="final-score">Final Score: 0</p>
+    <p id="best-combo">Best Combo: x0</p>
+    <p id="reward">+0 Anime Points!</p>
+    <button id="play-again">Play Again</button>
+    <button id="back-main">Back to Main</button>
+  </div>
+
+</div>
+<script src="./js/anime-game.js"></script>
+</body>
+</html>
